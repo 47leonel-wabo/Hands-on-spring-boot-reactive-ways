@@ -24,14 +24,24 @@ public class RouterConfig {
     }
 
     @Bean
-    public RouterFunction<ServerResponse> serverResponseRouteFunction() {
+    public RouterFunction<ServerResponse> highLevelRouter() {
         return RouterFunctions.route()
-                .GET("/router/square/{value}", mRequestHandler::squareRootHandler)
-                .GET("/router/table/{value}", mRequestHandler::tableHandler)
-                .GET("/router/table/{value}/stream", mRequestHandler::tableStreamHandler)
-                .POST("/router/multiply", mRequestHandler::multiplyHandler)
-                .GET("/router/square/{value}/validation", mRequestHandler::squareRootWithValidationHandler)
-                    .onError(InputValueException.class, exceptionHandler())
+                .path("/router", this::serverResponseRouteFunction)
+                .build();
+    }
+
+    /*
+     * POSSIBLE TO HAVE MULTIPLE ROUTE HANDLER FUNCTION BEAN
+     */
+//    @Bean
+    private RouterFunction<ServerResponse> serverResponseRouteFunction() {
+        return RouterFunctions.route()
+                .GET("/square/{value}", mRequestHandler::squareRootHandler)
+                .GET("/table/{value}", mRequestHandler::tableHandler)
+                .GET("/table/{value}/stream", mRequestHandler::tableStreamHandler)
+                .POST("/multiply", mRequestHandler::multiplyHandler)
+                .GET("/square/{value}/validation", mRequestHandler::squareRootWithValidationHandler)
+                .onError(InputValueException.class, exceptionHandler())
                 .build();
     }
 
