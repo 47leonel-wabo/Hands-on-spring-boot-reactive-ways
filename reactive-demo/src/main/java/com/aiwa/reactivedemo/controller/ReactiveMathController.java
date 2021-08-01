@@ -1,15 +1,15 @@
 package com.aiwa.reactivedemo.controller;
 
+import com.aiwa.reactivedemo.dto.MultiplyRequest;
 import com.aiwa.reactivedemo.dto.Response;
 import com.aiwa.reactivedemo.service.ReactiveMathService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = {"/r-math"})
@@ -37,5 +37,14 @@ public class ReactiveMathController {
     @GetMapping(path = {"/table/{value}/stream"}, produces = {MediaType.TEXT_EVENT_STREAM_VALUE})
     public Flux<Response> getMultiplicationTableStream(final @PathVariable("value") Integer value) {
         return this.mReactiveMathService.table(value);
+    }
+
+    @PostMapping(path = {"/multiply"})
+    public Mono<Response> multiply(
+            final @RequestBody Mono<MultiplyRequest> multiplyRequestMono,
+            final @RequestHeader Map<String, String> headers
+    ) {
+        System.out.println(headers);
+        return this.mReactiveMathService.multiplicationOf(multiplyRequestMono);
     }
 }
