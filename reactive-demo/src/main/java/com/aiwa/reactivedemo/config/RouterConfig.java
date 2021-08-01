@@ -5,10 +5,7 @@ import com.aiwa.reactivedemo.exception.InputValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.RouterFunctions;
-import org.springframework.web.reactive.function.server.ServerRequest;
-import org.springframework.web.reactive.function.server.ServerResponse;
+import org.springframework.web.reactive.function.server.*;
 import reactor.core.publisher.Mono;
 
 import java.util.function.BiFunction;
@@ -36,7 +33,13 @@ public class RouterConfig {
 //    @Bean
     private RouterFunction<ServerResponse> serverResponseRouteFunction() {
         return RouterFunctions.route()
-                .GET("/square/{value}", mRequestHandler::squareRootHandler)
+                .GET(
+                        "/square/{value}",
+                        RequestPredicates.path("*/1?") //multiple matches
+                                .or(RequestPredicates.path("*/20")),
+                        mRequestHandler::squareRootHandler
+                ) // if match
+                .GET("/square/{value}", serverRequest -> ServerResponse.badRequest().bodyValue("Only values between 10 - 20")) // if no match
                 .GET("/table/{value}", mRequestHandler::tableHandler)
                 .GET("/table/{value}/stream", mRequestHandler::tableStreamHandler)
                 .POST("/multiply", mRequestHandler::multiplyHandler)
