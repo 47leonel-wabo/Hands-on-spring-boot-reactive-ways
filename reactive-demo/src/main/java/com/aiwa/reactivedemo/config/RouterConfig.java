@@ -20,8 +20,8 @@ public class RouterConfig {
     @Bean
     public RouterFunction<ServerResponse> serverResponseRouteFunction() {
         return RouterFunctions.route()
-                .GET("/route/square/{value}", mRequestHandler::squareRootHandler)
-                .GET("/route/table/{value}", mRequestHandler::tableHandler)
+                .GET("/router/square/{value}", mRequestHandler::squareRootHandler)
+                .GET("/router/table/{value}", mRequestHandler::tableHandler)
                 .build();
     }
 
