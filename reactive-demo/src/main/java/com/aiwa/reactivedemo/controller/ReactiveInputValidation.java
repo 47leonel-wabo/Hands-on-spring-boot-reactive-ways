@@ -27,4 +27,18 @@ public class ReactiveInputValidation {
             throw new InputValueException(value);
         return this.mReactiveMathService.square(value);
     }
+
+    @GetMapping(path = {"/square/{value}/reactive"})
+    public Mono<Response> squareRootReactive(final @PathVariable("value") Integer value) {
+        return Mono
+                .just(value)
+                .handle((intValue, responseSink) -> {
+                    if (intValue >= 10 && intValue <= 20)
+                        responseSink.next(intValue);
+                    else
+                        responseSink.error(new InputValueException(intValue));
+                })
+                .cast(Integer.class)
+                .flatMap(this.mReactiveMathService::square);
+    }
 }
