@@ -1,5 +1,6 @@
 package com.aiwa.reactivedemo.config;
 
+import com.aiwa.reactivedemo.dto.MultiplyRequest;
 import com.aiwa.reactivedemo.dto.Response;
 import com.aiwa.reactivedemo.service.ReactiveMathService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,11 @@ public class RequestHandler {
         return ServerResponse.ok()
                 .contentType(MediaType.TEXT_EVENT_STREAM)
                 .body(responseFlux, Response.class);
+    }
+
+    public Mono<ServerResponse> multiplyHandler(ServerRequest request) {
+        Mono<MultiplyRequest> requestMono = request.bodyToMono(MultiplyRequest.class);
+        Mono<Response> multiplication = this.mMathService.multiplicationOf(requestMono);
+        return ServerResponse.ok().body(multiplication, Response.class);
     }
 }
