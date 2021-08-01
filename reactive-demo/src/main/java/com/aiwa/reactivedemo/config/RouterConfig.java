@@ -22,6 +22,7 @@ public class RouterConfig {
         return RouterFunctions.route()
                 .GET("/router/square/{value}", mRequestHandler::squareRootHandler)
                 .GET("/router/table/{value}", mRequestHandler::tableHandler)
+                .GET("/router/table/{value}/stream", mRequestHandler::tableStreamHandler)
                 .build();
     }
 

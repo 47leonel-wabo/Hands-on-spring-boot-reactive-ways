@@ -3,6 +3,7 @@ package com.aiwa.reactivedemo.config;
 import com.aiwa.reactivedemo.dto.Response;
 import com.aiwa.reactivedemo.service.ReactiveMathService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -30,5 +31,14 @@ public class RequestHandler {
         int i = Integer.parseInt(request.pathVariable("value"));
         Flux<Response> responseFlux = this.mMathService.table(i);
         return ServerResponse.ok().body(responseFlux, Response.class);
+    }
+
+    // Making this functional endpoint stream reactive
+    public Mono<ServerResponse> tableStreamHandler(ServerRequest request) {
+        int i = Integer.parseInt(request.pathVariable("value"));
+        Flux<Response> responseFlux = this.mMathService.table(i);
+        return ServerResponse.ok()
+                .contentType(MediaType.TEXT_EVENT_STREAM)
+                .body(responseFlux, Response.class);
     }
 }
