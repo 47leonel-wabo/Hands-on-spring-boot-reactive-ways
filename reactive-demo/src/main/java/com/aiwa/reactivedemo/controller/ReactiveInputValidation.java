@@ -4,6 +4,7 @@ import com.aiwa.reactivedemo.dto.Response;
 import com.aiwa.reactivedemo.exception.InputValueException;
 import com.aiwa.reactivedemo.service.ReactiveMathService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,5 +41,15 @@ public class ReactiveInputValidation {
                 })
                 .cast(Integer.class)
                 .flatMap(this.mReactiveMathService::square);
+    }
+
+    @GetMapping(path = {"/square/{value}/s-reactive"})
+    public Mono<ResponseEntity<Response>> squareRootReactiveSimple(final @PathVariable("value") Integer value) {
+        return Mono
+                .just(value)
+                .filter(v -> v >= 10 && v <= 20)
+                .flatMap(this.mReactiveMathService::square)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.badRequest().build());
     }
 }
