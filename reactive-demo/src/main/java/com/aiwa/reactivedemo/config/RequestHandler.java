@@ -2,6 +2,7 @@ package com.aiwa.reactivedemo.config;
 
 import com.aiwa.reactivedemo.dto.MultiplyRequest;
 import com.aiwa.reactivedemo.dto.Response;
+import com.aiwa.reactivedemo.exception.InputValueException;
 import com.aiwa.reactivedemo.service.ReactiveMathService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -47,5 +48,15 @@ public class RequestHandler {
         Mono<MultiplyRequest> requestMono = request.bodyToMono(MultiplyRequest.class);
         Mono<Response> multiplication = this.mMathService.multiplicationOf(requestMono);
         return ServerResponse.ok().body(multiplication, Response.class);
+    }
+
+    // Throw custom exception if condition not met
+    public Mono<ServerResponse> squareRootWithValidationHandler(ServerRequest request) {
+        int i = Integer.parseInt(request.pathVariable("value"));
+        if (i < 10 || i > 20) {
+            return Mono.error(new InputValueException((i))); // Emit error signal
+        }
+        Mono<Response> responseMono = this.mMathService.square(i);
+        return ServerResponse.ok().body(responseMono, Response.class);
     }
 }
