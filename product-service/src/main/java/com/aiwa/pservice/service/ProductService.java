@@ -39,13 +39,13 @@ public class ProductService {
 
     public Mono<ProductDto> updateProduct(final String id, final Mono<ProductDto> productDtoMono) {
         return this.mProductRepository
-                .findById(id)
-                .flatMap(
+                .findById(id) // first get element by id
+                .flatMap( // on the element retrieved
                         product -> productDtoMono
-                                .map(EntityDtoConvert::toProduct)
-                                .doOnNext(p -> p.setId(id))
+                                .map(EntityDtoConvert::toProduct) // convert passed new values to expected one
+                                .doOnNext(p -> p.setId(id)) // add to this expected object an id
                 )
-                .flatMap(this.mProductRepository::save)
-                .map(EntityDtoConvert::toDto);
+                .flatMap(this.mProductRepository::save) // proceed saving
+                .map(EntityDtoConvert::toDto); // convert object returned after saving to expected object to be shown
     }
 }
