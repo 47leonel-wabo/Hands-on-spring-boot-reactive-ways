@@ -4,10 +4,12 @@ import com.aiwa.pservice.dto.ProductDto;
 import com.aiwa.pservice.repository.ProductRepository;
 import com.aiwa.pservice.util.EntityDtoConvert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Range;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Service
@@ -23,6 +25,12 @@ public class ProductService {
     public Flux<ProductDto> fetchProducts() {
         return this.mProductRepository
                 .findAll()
+                .map(EntityDtoConvert::toDto);
+    }
+
+    public Flux<ProductDto> fetchProductsByPriceRance(final BigDecimal min, final BigDecimal max) {
+        return this.mProductRepository
+                .findByPriceBetween(Range.closed(min, max))
                 .map(EntityDtoConvert::toDto);
     }
 

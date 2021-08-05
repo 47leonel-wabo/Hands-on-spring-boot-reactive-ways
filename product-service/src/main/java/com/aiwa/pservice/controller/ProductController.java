@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping(path = {"/product"})
 public class ProductController {
@@ -22,6 +24,16 @@ public class ProductController {
     @GetMapping(path = {"/all"})
     public Flux<ProductDto> allProducts() {
         return this.mProductService.fetchProducts();
+    }
+
+    @GetMapping(path = {"/price-range"})
+    public Flux<ProductDto> productsByPriceRange(
+            final @RequestParam("min") BigDecimal min,
+            final @RequestParam("max") BigDecimal max
+    ) {
+        return this.mProductService
+                .fetchProductsByPriceRance(min, max);
+
     }
 
     @GetMapping(path = {"/{id}"})
