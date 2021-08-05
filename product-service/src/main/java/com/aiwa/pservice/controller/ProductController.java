@@ -20,8 +20,8 @@ public class ProductController {
     }
 
     @GetMapping(path = {"/all"})
-    public Flux<ResponseEntity<ProductDto>> allProducts() {
-        return this.mProductService.fetchProducts().map(ResponseEntity::ok);
+    public Flux<ProductDto> allProducts() {
+        return this.mProductService.fetchProducts();
     }
 
     @GetMapping(path = {"/{id}"})
@@ -54,7 +54,6 @@ public class ProductController {
     public Mono<ResponseEntity<Void>> deleteProduct(final @PathVariable("id") String id) {
         return this.mProductService
                 .deleteProduct(id)
-                .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.badRequest().build());
+                .map(ResponseEntity::ok);
     }
 }

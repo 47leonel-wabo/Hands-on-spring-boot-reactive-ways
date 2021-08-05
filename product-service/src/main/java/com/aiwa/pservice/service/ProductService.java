@@ -46,13 +46,13 @@ public class ProductService {
          * there is an object in database with the provided ID parameter, then
          * take the object holding new properties set that ID to it and save it.
          */
-        String id1 = Objects.requireNonNull(productDtoMono.block()).getId();
+//        String id1 = Objects.requireNonNull(productDtoMono.block()).getId(); // NOT GOOD AT ALL
         return this.mProductRepository
-                .findById(id1) // first get element by id
+                .findById(id) // first get element by id
                 .flatMap( // on the element retrieved
                         product -> productDtoMono
                                 .map(EntityDtoConvert::toProduct) // convert passed new values to expected one
-                                .doOnNext(p -> p.setId(id1)) // add to this expected object an id
+                                .doOnNext(p -> p.setId(id)) // add to this expected object an id
                 )
                 .flatMap(this.mProductRepository::save) // proceed saving
                 .map(EntityDtoConvert::toDto); // convert object returned after saving to expected object to be shown

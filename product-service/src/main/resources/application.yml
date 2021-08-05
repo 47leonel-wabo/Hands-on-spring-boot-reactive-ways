@@ -1,0 +1,12 @@
+server:
+  port: 8001
+
+# Datasource configuration
+spring:
+  data:
+    mongodb:
+      database: productdb
+#      host: localhost
+#      port: 27017
+#      username:
+#      password:
