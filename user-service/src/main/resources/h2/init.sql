@@ -15,4 +15,4 @@ create table user_operation (
     operation_date timestamp,
     primary key (id),
     foreign key (user_id) references users(id) on delete cascade
-)
+);
