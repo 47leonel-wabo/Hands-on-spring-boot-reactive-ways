@@ -12,10 +12,10 @@ import java.math.BigDecimal;
 public class UserDto {
     private Long id;
     private String name;
-    private BigDecimal balance;
+    private BigDecimal amount;
 
     public UserDto(String name, BigDecimal amount) {
         this.name = name;
-        this.balance = amount;
+        this.amount = amount;
     }
 }

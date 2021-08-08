@@ -10,7 +10,7 @@ import org.springframework.util.StreamUtils;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-@Service
+//@Service
 public class InitialDataSetup implements CommandLineRunner {
 
     @Value("classpath:h2/init.sql")
