@@ -27,7 +27,7 @@ public class InitialDataSetup implements CommandLineRunner {
     public void run(String... args) throws Exception {
         String query = StreamUtils.copyToString(intialSql.getInputStream(), UTF_8);
 
-        System.out.println(query);
+        //System.out.println(query);
 
         this.mR2dbcEntityTemplate
                 .getDatabaseClient()
